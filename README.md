@@ -20,7 +20,21 @@ O resultado é gravado em `results.txt` a cada execução.
   "letters":          [],
   "mandatory":        ["A", "R"],
   "prohibited":       ["E", "S"],
-  "quantity_letters": [5]
+  "quantity_letters": [5],
+  "pattern":          ""
+}
+```
+
+**Termo com posições**: você descobriu que a 2ª letra é A e a 4ª é U (tiles verdes).
+
+```json
+{
+  "mode": "blacklist",
+  "letters":          [],
+  "mandatory":        ["A", "U"],
+  "prohibited":       ["E", "S"],
+  "quantity_letters": [5],
+  "pattern":          "_A_U_"
 }
 ```
 
@@ -49,6 +63,7 @@ Edite `src/rules.json` antes de rodar o script.
 | `mandatory` | string[] | Letras que **devem** aparecer na palavra |
 | `prohibited` | string[] | Letras bloqueadas (modo blacklist). Aceita `"*"` como curinga |
 | `quantity_letters` | number[] | Tamanhos de palavra aceitos (contando só letras, sem acentos) |
+| `pattern` | string | Posições fixas da palavra. Letras = posição certa (tile verde), `_` = livre. Ex: `"_A_U_"` → A na pos 2, U na pos 4 |
 
 ### Modos
 

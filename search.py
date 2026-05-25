@@ -22,6 +22,7 @@ class CompiledRules:
       quantities          — tamanhos de palavra aceitos (contagem só de letras)
       mode                — "whitelist" ou "blacklist"
       wildcard_prohibited — True quando prohibited contém "*"
+      pattern             — tupla de (índice_0based, letra) para posições fixas
     """
     pool: frozenset[str]
     mandatory: frozenset[str]
@@ -29,6 +30,7 @@ class CompiledRules:
     quantities: frozenset[int]
     mode: str
     wildcard_prohibited: bool
+    pattern: tuple[tuple[int, str], ...] = field(default_factory=tuple)
     _non_alpha: re.Pattern = field(default=re.compile(r"[^A-Z]"), compare=False)
 
     def normalize(self, word: str) -> str:
@@ -61,6 +63,8 @@ class CompiledRules:
         Em ambos os modos:
           — O tamanho da palavra (só letras) precisa estar em `quantity_letters`.
           — Todas as letras de `mandatory` precisam aparecer.
+          — `pattern` define posições fixas: cada letra no pattern deve coincidir
+            com a posição correspondente na palavra (tile verde do Wordle/Termo).
         """
         letters = self.normalize(word)
         if not letters:
@@ -89,6 +93,11 @@ class CompiledRules:
         if not self.mandatory.issubset(letter_set):
             return False
 
+        # Pattern: letras fixas devem estar nas posições corretas (tile verde)
+        for idx, letter in self.pattern:
+            if idx < len(letters) and letters[idx] != letter:
+                return False
+
         return True
 
 
@@ -107,6 +116,10 @@ def compile_rules(path: Path) -> CompiledRules:
     mandatory = frozenset(raw.get("mandatory", []))
     prohibited_raw = raw.get("prohibited", [])
     wildcard = "*" in prohibited_raw
+    raw_pattern = raw.get("pattern", "").upper()
+    parsed_pattern = tuple(
+        (i, ch) for i, ch in enumerate(raw_pattern) if ch != "_"
+    )
     return CompiledRules(
         pool=letters | mandatory,
         mandatory=mandatory,
@@ -114,6 +127,7 @@ def compile_rules(path: Path) -> CompiledRules:
         quantities=frozenset(raw.get("quantity_letters", [])),
         mode=raw.get("mode", "whitelist"),
         wildcard_prohibited=wildcard,
+        pattern=parsed_pattern,
     )
 
 

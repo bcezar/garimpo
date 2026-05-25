@@ -1,29 +1,16 @@
 {
-   "mode": "whitelist",
+   "mode": "blacklist",
    "letters": [
       
    ],
    "mandatory": [
-      "U",
-      "G",
-      "A"
+      "T"
    ],
    "prohibited": [
-      "E",
-      "R",
-      "T",
-      "I",
-      "O",
-      "P",
-      "S",
-      "L",
-      "C",
-      "V",
-      "N",
-      "M"
-     
+      "L"
    ],
    "quantity_letters": [
       5
-   ]
+   ],
+   "pattern": "PA__S"
 }
