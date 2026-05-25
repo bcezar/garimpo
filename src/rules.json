@@ -1,0 +1,29 @@
+{
+   "mode": "whitelist",
+   "letters": [
+      
+   ],
+   "mandatory": [
+      "U",
+      "G",
+      "A"
+   ],
+   "prohibited": [
+      "E",
+      "R",
+      "T",
+      "I",
+      "O",
+      "P",
+      "S",
+      "L",
+      "C",
+      "V",
+      "N",
+      "M"
+     
+   ],
+   "quantity_letters": [
+      5
+   ]
+}
